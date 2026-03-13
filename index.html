@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Yoga &amp; Fitness Coaching</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sage: {
+              50: '#f6f7f4', 100: '#e8ebe3', 200: '#d4dac9', 300: '#b5c0a4', 400: '#96a77e',
+              500: '#7a8e63', 600: '#5f714d', 700: '#4b593e', 800: '#3e4934', 900: '#353f2e',
+            },
+            sand: {
+              50: '#faf8f5', 100: '#f5f0e8', 200: '#ede4d5', 300: '#ddd0b8', 400: '#c9b494',
+              500: '#b99d78', 600: '#ac8a67', 700: '#907256', 800: '#755e49', 900: '#604e3e',
+            },
+            warm: { 50: '#fdfcfa', 100: '#f9f6f1', 200: '#f3ede3', 300: '#e8dece' }
+          },
+          fontFamily: {
+            heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .app-wrapper { height: 100%; width: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+    
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    @keyframes slideRight { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+    
+    .anim-fade-up { animation: fadeUp 0.8s ease-out both; }
+    .anim-fade-up-d1 { animation: fadeUp 0.8s ease-out 0.15s both; }
+    .anim-fade-up-d2 { animation: fadeUp 0.8s ease-out 0.3s both; }
+    .anim-fade-up-d3 { animation: fadeUp 0.8s ease-out 0.45s both; }
+    .anim-fade-up-d4 { animation: fadeUp 0.8s ease-out 0.6s both; }
+    .anim-fade-up-d5 { animation: fadeUp 0.8s ease-out 0.75s both; }
+    .anim-scale-in { animation: scaleIn 0.8s ease-out both; }
+    .anim-slide-right { animation: slideRight 0.8s ease-out both; }
+    .anim-breathe { animation: breathe 6s ease-in-out infinite; }
+    
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    
+    .hero-pattern {
+      background-image: radial-gradient(ellipse at 20% 50%, rgba(122, 142, 99, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(185, 157, 120, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(122, 142, 99, 0.05) 0%, transparent 50%);
+    }
+    
+    .card-hover { transition: transform 0.4s ease, box-shadow 0.4s ease; }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 60px -15px rgba(75, 89, 62, 0.15); }
+    
+    .nav-blur { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    
+    .btn-shine { position: relative; overflow: hidden; }
+    .btn-shine::after {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%);
+      transform: rotate(30deg); transition: transform 0.6s ease;
+    }
+    .btn-shine:hover::after { transform: rotate(30deg) translateY(-30%); }
+    
+    .mobile-menu { transition: opacity 0.3s ease, transform 0.3s ease; }
+    .mobile-menu.hidden-menu { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+    .mobile-menu.visible-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+    
+    .quote-mark { font-family: 'Cormorant Garamond', serif; font-size: 6rem; line-height: 1; color: rgba(122, 142, 99, 0.15); }
+  </style>
+  <script src="/_sdk/data_sdk.js"></script>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full font-body" style="background-color: #fdfcfa; color: #3e4934;">
+  <div class="app-wrapper" id="appWrapper"><!-- NAVIGATION -->
+   <header class="fixed top-0 left-0 w-full z-50 nav-blur" style="background-color: rgba(253, 252, 250, 0.9);">
+    <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#" onclick="goToPage('home'); return false;" class="flex items-center gap-2 group cursor-pointer">
+      <svg width="36" height="36" viewbox="0 0 36 36" fill="none">
+       <circle cx="18" cy="18" r="16" stroke="#7a8e63" stroke-width="1.5" fill="none" /> <path d="M18 6 C18 6 10 14 10 20 C10 24.4 13.6 28 18 28 C22.4 28 26 24.4 26 20 C26 14 18 6 18 6Z" fill="#7a8e63" opacity="0.2" /> <path d="M18 12 C18 12 14 17 14 20 C14 22.2 15.8 24 18 24 C20.2 24 22 22.2 22 20 C22 17 18 12 18 12Z" fill="#7a8e63" opacity="0.4" /> <line x1="18" y1="16" x2="18" y2="28" stroke="#7a8e63" stroke-width="1.2" />
+      </svg><span class="font-heading text-xl font-semibold tracking-wide" style="color: #4b593e;">Serene Flow</span> </a> <!-- Desktop Nav -->
+     <div class="hidden md:flex items-center gap-8"><a href="#" onclick="goToPage('home'); return false;" class="text-sm font-medium tracking-wide hover:text-sage-600 transition-colors" style="color: #755e49; cursor: pointer;">Home</a> <a href="#" onclick="goToPage('about'); return false;" class="text-sm font-medium tracking-wide hover:text-sage-600 transition-colors" style="color: #755e49; cursor: pointer;">About</a> <a href="#" onclick="goToPage('programs'); return false;" class="text-sm font-medium tracking-wide hover:text-sage-600 transition-colors" style="color: #755e49; cursor: pointer;">Programs</a> <a href="#" onclick="goToPage('packages'); return false;" class="text-sm font-medium tracking-wide hover:text-sage-600 transition-colors" style="color: #755e49; cursor: pointer;">Pricing</a> <a href="#" onclick="goToPage('stories'); return false;" class="text-sm font-medium tracking-wide hover:text-sage-600 transition-colors" style="color: #755e49; cursor: pointer;">Stories</a> <a href="#" onclick="goToPage('blog'); return false;" class="text-sm font-medium tracking-wide hover:text-sage-600 transition-colors" style="color: #755e49; cursor: pointer;">Insights</a> <a href="#" onclick="goToPage('contact'); return false;" class="btn-shine inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg cursor-pointer" style="background-color: #7a8e63;"><span>Book Session</span> <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></a>
+     </div><!-- Mobile Menu Button --> <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-sage-50 transition-colors" aria-label="Toggle menu"><i data-lucide="menu" style="width:24px;height:24px;color:#4b593e;"></i></button>
+    </nav><!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu hidden-menu md:hidden px-6 pb-6" style="background-color: rgba(253, 252, 250, 0.98);">
+     <div class="flex flex-col gap-4"><a href="#" onclick="goToPage('home'); closeMenu(); return false;" class="text-sm font-medium py-2 border-b border-sage-100 cursor-pointer" style="color: #755e49;">Home</a> <a href="#" onclick="goToPage('about'); closeMenu(); return false;" class="text-sm font-medium py-2 border-b border-sage-100 cursor-pointer" style="color: #755e49;">About</a> <a href="#" onclick="goToPage('programs'); closeMenu(); return false;" class="text-sm font-medium py-2 border-b border-sage-100 cursor-pointer" style="color: #755e49;">Programs</a> <a href="#" onclick="goToPage('packages'); closeMenu(); return false;" class="text-sm font-medium py-2 border-b border-sage-100 cursor-pointer" style="color: #755e49;">Pricing</a> <a href="#" onclick="goToPage('stories'); closeMenu(); return false;" class="text-sm font-medium py-2 border-b border-sage-100 cursor-pointer" style="color: #755e49;">Stories</a> <a href="#" onclick="goToPage('blog'); closeMenu(); return false;" class="text-sm font-medium py-2 border-b border-sage-100 cursor-pointer" style="color: #755e49;">Insights</a> <a href="#" onclick="goToPage('contact'); closeMenu(); return false;" class="btn-shine inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-semibold text-white cursor-pointer" style="background-color: #7a8e63;"><span>Book Session</span></a>
+     </div>
+    </div>
+   </header><!-- PAGES -->
+   <main class="pt-24"><!-- HOME PAGE -->
+    <div id="page-home" class="page-section active"><!-- Hero -->
+     <section class="relative hero-pattern" style="min-height: 100%; display: flex; align-items: center;">
+      <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(246,247,244,0.6) 0%, rgba(250,248,245,0.4) 50%, rgba(237,228,213,0.3) 100%);"></div>
+      <div class="absolute top-20 left-10 w-64 h-64 rounded-full opacity-30" style="background: radial-gradient(circle, rgba(122,142,99,0.1) 0%, transparent 70%);"></div>
+      <div class="absolute bottom-20 right-10 w-96 h-96 rounded-full opacity-20" style="background: radial-gradient(circle, rgba(185,157,120,0.1) 0%, transparent 70%);"></div>
+      <div class="relative z-10 max-w-7xl mx-auto px-6 py-32 w-full">
+       <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="order-2 lg:order-1">
+         <div class="anim-fade-up inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8" style="background-color: rgba(122,142,99,0.1);">
+          <span class="w-2 h-2 rounded-full anim-breathe" style="background-color: #7a8e63;"></span> <span class="text-xs font-semibold tracking-widest uppercase" style="color: #5f714d;">Wellness Coaching</span>
+         </div>
+         <h1 class="anim-fade-up-d1 font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight mb-6" style="color: #353f2e;" id="heroHeadline">Transform Your Body, Mind, and Lifestyle</h1>
+         <p class="anim-fade-up-d2 text-base sm:text-lg leading-relaxed mb-4 max-w-xl" style="color: #755e49;" id="heroSubheading">Personalized yoga and fitness coaching designed to improve strength, flexibility, mental clarity, and overall well-being.</p>
+         <p class="anim-fade-up-d3 text-sm leading-relaxed mb-10 max-w-lg" style="color: #907256;">Build sustainable habits that support long-term physical and mental wellness through structured guidance and mindful practice.</p>
+         <div class="anim-fade-up-d4 flex flex-wrap gap-4"><a href="#" onclick="goToPage('packages'); return false;" class="btn-shine inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer" style="background-color: #7a8e63;"><i data-lucide="calendar" style="width:18px;height:18px;"></i> <span>Book a Session</span></a> <a href="#" onclick="goToPage('programs'); return false;" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold border-2 transition-all duration-300 hover:shadow-md cursor-pointer" style="color: #5f714d; border-color: #b5c0a4; background-color: rgba(255,255,255,0.6);"><span>Explore Programs</span> <i data-lucide="chevron-down" style="width:16px;height:16px;"></i></a>
+         </div>
+         <div class="anim-fade-up-d5 flex flex-wrap gap-8 mt-12 pt-8" style="border-top: 1px solid rgba(122,142,99,0.15);">
+          <div>
+           <span class="font-heading text-3xl font-bold" style="color: #4b593e;">500+</span>
+           <p class="text-xs mt-1 tracking-wide uppercase" style="color: #907256;">Clients Transformed</p>
+          </div>
+          <div>
+           <span class="font-heading text-3xl font-bold" style="color: #4b593e;">10+</span>
+           <p class="text-xs mt-1 tracking-wide uppercase" style="color: #907256;">Years Experience</p>
+          </div>
+          <div>
+           <span class="font-heading text-3xl font-bold" style="color: #4b593e;">99%</span>
+           <p class="text-xs mt-1 tracking-wide uppercase" style="color: #907256;">Client Satisfaction</p>
+          </div>
+         </div>
+        </div>
+        <div class="order-1 lg:order-2 anim-scale-in">
+         <div class="relative">
+          <div class="absolute -inset-4 rounded-3xl anim-breathe" style="background: linear-gradient(135deg, rgba(122,142,99,0.08), rgba(185,157,120,0.08)); border-radius: 40% 60% 55% 45% / 55% 45% 55% 45%;"></div>
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl" style="aspect-ratio: 4/5; max-height: 600px;">
+           <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(160deg, #e8ebe3 0%, #f5f0e8 40%, #ede4d5 100%);">
+            <svg viewbox="0 0 400 500" fill="none" style="width: 85%; height: 85%;"><circle cx="200" cy="140" r="60" fill="#ddd0b8" opacity="0.4" /> <circle cx="200" cy="140" r="45" fill="#c9b494" opacity="0.3" /> <path d="M0 350 L100 250 L180 300 L250 220 L320 280 L400 230 L400 500 L0 500Z" fill="#b5c0a4" opacity="0.2" /> <path d="M0 400 L150 320 L250 360 L400 300 L400 500 L0 500Z" fill="#96a77e" opacity="0.15" /> <g transform="translate(200, 250)">
+              <line x1="0" y1="0" x2="0" y2="120" stroke="#5f714d" stroke-width="3" stroke-linecap="round" />
+              <path d="M0 60 Q20 50 15 30" stroke="#5f714d" stroke-width="3" fill="none" stroke-linecap="round" />
+              <line x1="0" y1="0" x2="0" y2="-70" stroke="#5f714d" stroke-width="3" stroke-linecap="round" />
+              <path d="M0 -40 Q-15 -70 -10 -100" stroke="#5f714d" stroke-width="2.5" fill="none" stroke-linecap="round" />
+              <path d="M0 -40 Q15 -70 10 -100" stroke="#5f714d" stroke-width="2.5" fill="none" stroke-linecap="round" />
+              <path d="M-10 -100 Q0 -110 10 -100" stroke="#5f714d" stroke-width="2" fill="none" stroke-linecap="round" />
+              <circle cx="0" cy="-82" r="12" stroke="#5f714d" stroke-width="2.5" fill="none" />
+              <path d="M0 120 Q-10 125 -15 120" stroke="#5f714d" stroke-width="2.5" fill="none" stroke-linecap="round" />
+             </g> <g opacity="0.3">
+              <path d="M60 400 Q80 370 70 340 Q90 370 60 400Z" fill="#7a8e63" />
+              <path d="M340 380 Q360 350 350 320 Q370 350 340 380Z" fill="#7a8e63" />
+             </g>
+            </svg>
+           </div>
+          </div>
+          <div class="absolute -bottom-4 -left-4 sm:left-4 p-4 rounded-2xl shadow-xl anim-fade-up-d5" style="background-color: rgba(255,255,255,0.95); backdrop-filter: blur(10px);">
+           <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: rgba(122,142,99,0.15);">
+             <i data-lucide="award" style="width:18px;height:18px;color:#5f714d;"></i>
+            </div>
+            <div>
+             <p class="text-xs font-semibold" style="color: #4b593e;">Certified Professional</p>
+             <p class="text-xs" style="color: #907256;">RYT-500 &amp; ACE Trainer</p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section><!-- Introduction -->
+     <section class="py-16 lg:py-20" style="background-color: #f9f6f1;">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+       <p class="text-base leading-relaxed mb-6" style="color: #604e3e;">This coaching platform is designed to help individuals develop stronger bodies, calmer minds, and healthier lifestyles through structured yoga practices and personalized fitness training. Whether you're just starting your wellness journey or looking to improve your fitness routine, our programs are designed to guide you every step of the way.</p>
+      </div>
+     </section><!-- Program Highlights -->
+     <section class="py-20 lg:py-28" style="background-color: #fdfcfa;">
+      <div class="max-w-7xl mx-auto px-6">
+       <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight" style="color: #353f2e;">Featured Programs</h2>
+       </div>
+       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card-hover reveal rounded-2xl p-7 border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.2);">
+         <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background-color: rgba(122,142,99,0.12);">
+          <i data-lucide="leaf" style="width:22px;height:22px;color:#5f714d;"></i>
+         </div>
+         <h3 class="font-heading text-lg font-semibold mb-3" style="color: #353f2e;">Beginner Yoga Journey</h3>
+         <p class="text-sm leading-relaxed" style="color: #755e49;">Structured introduction to yoga for improved flexibility and foundational poses.</p>
+        </div>
+        <div class="card-hover reveal rounded-2xl p-7 border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.2);">
+         <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background-color: rgba(185,157,120,0.12);">
+          <i data-lucide="zap" style="width:22px;height:22px;color:#907256;"></i>
+         </div>
+         <h3 class="font-heading text-lg font-semibold mb-3" style="color: #353f2e;">Strength &amp; Mobility</h3>
+         <p class="text-sm leading-relaxed" style="color: #755e49;">Balanced fitness program for strength, balance, and overall mobility improvement.</p>
+        </div>
+        <div class="card-hover reveal rounded-2xl p-7 border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.2);">
+         <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background-color: rgba(122,142,99,0.12);">
+          <i data-lucide="wind" style="width:22px;height:22px;color:#5f714d;"></i>
+         </div>
+         <h3 class="font-heading text-lg font-semibold mb-3" style="color: #353f2e;">Mindfulness &amp; Meditation</h3>
+         <p class="text-sm leading-relaxed" style="color: #755e49;">Guided breathing and meditation sessions to reduce stress and improve clarity.</p>
+        </div>
+        <div class="card-hover reveal rounded-2xl p-7 border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.2);">
+         <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background-color: rgba(185,157,120,0.12);">
+          <i data-lucide="flame" style="width:22px;height:22px;color:#907256;"></i>
+         </div>
+         <h3 class="font-heading text-lg font-semibold mb-3" style="color: #353f2e;">Personal Transformation</h3>
+         <p class="text-sm leading-relaxed" style="color: #755e49;">Structured program for long-term physical and mental transformation goals.</p>
+        </div>
+       </div>
+      </div>
+     </section><!-- CTA Section -->
+     <section style="background: linear-gradient(160deg, #4b593e 0%, #3e4934 50%, #353f2e 100%);" class="py-20 lg:py-28">
+      <div class="max-w-4xl mx-auto px-6 text-center reveal">
+       <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight mb-6 text-white">Start Your Transformation Today</h2>
+       <p class="text-base leading-relaxed mb-10 max-w-2xl mx-auto" style="color: #b5c0a4;">Join hundreds of clients who have transformed their bodies and minds through our proven coaching programs.</p>
+       <div class="flex flex-wrap justify-center gap-4"><a href="#" onclick="goToPage('packages'); return false;" class="btn-shine inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-xl cursor-pointer" style="background-color: #7a8e63; color: #ffffff;"><i data-lucide="calendar" style="width:18px;height:18px;"></i> <span>View Packages</span></a> <a href="#" onclick="goToPage('contact'); return false;" class="inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-semibold border transition-all duration-300 hover:bg-white hover:bg-opacity-10 cursor-pointer" style="color: #d4dac9; border-color: rgba(255,255,255,0.2);"><i data-lucide="mail" style="width:18px;height:18px;"></i> <span>Get in Touch</span></a>
+       </div>
+      </div>
+     </section>
+    </div><!-- ABOUT PAGE -->
+    <div id="page-about" class="page-section">
+     <section class="py-20 lg:py-28" style="background-color: #fdfcfa;">
+      <div class="max-w-7xl mx-auto px-6">
+       <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal">
+         <div class="rounded-3xl overflow-hidden shadow-lg" style="aspect-ratio: 3/4; max-height: 550px;">
+          <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(145deg, #d4dac9 0%, #e8ebe3 50%, #ede4d5 100%);">
+           <svg viewbox="0 0 300 400" fill="none" style="width: 80%; height: 80%;"><g transform="translate(150, 220)">
+             <ellipse cx="0" cy="80" rx="60" ry="15" fill="#b5c0a4" opacity="0.3" />
+             <path d="M-35 60 Q-20 40 0 50 Q20 40 35 60" stroke="#4b593e" stroke-width="2.5" fill="none" stroke-linecap="round" />
+             <line x1="0" y1="50" x2="0" y2="-20" stroke="#4b593e" stroke-width="2.5" stroke-linecap="round" />
+             <path d="M0 10 Q-25 20 -35 55" stroke="#4b593e" stroke-width="2" fill="none" stroke-linecap="round" />
+             <path d="M0 10 Q25 20 35 55" stroke="#4b593e" stroke-width="2" fill="none" stroke-linecap="round" />
+             <circle cx="0" cy="-32" r="14" stroke="#4b593e" stroke-width="2.5" fill="none" />
+             <circle cx="0" cy="-32" r="30" stroke="#7a8e63" stroke-width="0.8" fill="none" opacity="0.3" />
+             <circle cx="0" cy="-32" r="50" stroke="#7a8e63" stroke-width="0.5" fill="none" opacity="0.2" />
+             <circle cx="0" cy="-32" r="70" stroke="#7a8e63" stroke-width="0.3" fill="none" opacity="0.1" />
+            </g>
+           </svg>
+          </div>
+         </div>
+        </div>
+        <div class="reveal"><span class="inline-block text-xs font-semibold tracking-widest uppercase mb-4 px-3 py-1.5 rounded-full" style="color: #5f714d; background-color: rgba(122,142,99,0.1);">About Me</span>
+         <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight mb-6" style="color: #353f2e;" id="instructorName">Meet Your Instructor</h2>
+         <p class="text-base leading-relaxed mb-6" style="color: #604e3e;">I am a certified yoga instructor and personal fitness coach passionate about helping individuals achieve their health and wellness goals through mindful movement and structured training programs.</p>
+         <p class="text-base leading-relaxed mb-8" style="color: #604e3e;">Over the past several years, I have worked with individuals from different backgrounds, including beginners starting their wellness journey, professionals managing stress, and fitness enthusiasts looking to improve flexibility and strength. My training philosophy focuses on building sustainable habits that support long-term physical and mental well-being.</p>
+         <div class="mb-10">
+          <h3 class="font-heading text-xl font-semibold mb-4" style="color: #353f2e;">Teaching Philosophy</h3>
+          <p class="text-sm leading-relaxed" style="color: #755e49;">My goal is to create a supportive environment where individuals can develop confidence in their bodies and gradually improve their strength, flexibility, and mental balance through consistent, mindful practice.</p>
+         </div>
+         <div>
+          <h3 class="font-heading text-xl font-semibold mb-4" style="color: #353f2e;">Credentials</h3>
+          <div class="flex flex-wrap gap-3"><span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium" style="background-color: #e8ebe3; color: #4b593e;"><i data-lucide="award" style="width:14px;height:14px;"></i> RYT-500 Certified</span> <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium" style="background-color: #ede4d5; color: #755e49;"><i data-lucide="heart" style="width:14px;height:14px;"></i> ACE Certified Trainer</span> <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium" style="background-color: #e8ebe3; color: #4b593e;"><i data-lucide="leaf" style="width:14px;height:14px;"></i> Meditation Coach</span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section>
+    </div><!-- PROGRAMS PAGE -->
+    <div id="page-programs" class="page-section">
+     <section class="py-20 lg:py-28" style="background-color: #fdfcfa;">
+      <div class="max-w-7xl mx-auto px-6">
+       <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight" style="color: #353f2e;">Training Programs</h1>
+        <p class="text-base leading-relaxed mt-4" style="color: #907256;">Comprehensive programs designed for every level and goal.</p>
+       </div>
+       <div class="space-y-20"><!-- Program 1 -->
+        <div class="reveal grid lg:grid-cols-2 gap-12 items-center">
+         <div class="rounded-2xl overflow-hidden shadow-lg" style="aspect-ratio: 4/3;">
+          <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #e8ebe3 0%, #d4dac9 100%);">
+           <svg viewbox="0 0 400 300" fill="none" style="width: 90%; height: 90%;"><circle cx="200" cy="100" r="50" fill="#b5c0a4" opacity="0.3" /> <g transform="translate(200, 160)">
+             <line x1="0" y1="0" x2="0" y2="80" stroke="#5f714d" stroke-width="3" stroke-linecap="round" />
+             <path d="M0 20 Q-25 10 -30 -20" stroke="#5f714d" stroke-width="2.5" fill="none" stroke-linecap="round" />
+             <path d="M0 20 Q25 10 30 -20" stroke="#5f714d" stroke-width="2.5" fill="none" stroke-linecap="round" />
+             <circle cx="0" cy="-50" r="10" stroke="#5f714d" stroke-width="2" fill="none" />
+            </g>
+           </svg>
+          </div>
+         </div>
+         <div><span class="inline-block text-xs font-semibold tracking-widest uppercase mb-3 px-3 py-1.5 rounded-full" style="color: #5f714d; background-color: rgba(122,142,99,0.1);">Program 1</span>
+          <h3 class="font-heading text-2xl lg:text-3xl font-semibold mb-4" style="color: #353f2e;">Beginner Yoga Program</h3>
+          <p class="text-base leading-relaxed mb-6" style="color: #604e3e;">Designed for individuals who want to start practicing yoga safely and effectively. This foundational program builds a strong base for your yoga practice.</p>
+          <div class="space-y-3">
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Foundational yoga poses</span>
+           </div>
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Flexibility exercises</span>
+           </div>
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Breathing techniques</span>
+           </div>
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Basic meditation practices</span>
+           </div>
+          </div>
+         </div>
+        </div><!-- Program 2 -->
+        <div class="reveal grid lg:grid-cols-2 gap-12 items-center lg:order-2">
+         <div class="order-2 lg:order-1"><span class="inline-block text-xs font-semibold tracking-widest uppercase mb-3 px-3 py-1.5 rounded-full" style="color: #5f714d; background-color: rgba(122,142,99,0.1);">Program 2</span>
+          <h3 class="font-heading text-2xl lg:text-3xl font-semibold mb-4" style="color: #353f2e;">Strength &amp; Flexibility Program</h3>
+          <p class="text-base leading-relaxed mb-6" style="color: #604e3e;">A structured fitness program combining yoga with strength training for balanced physical development and improved mobility.</p>
+          <div class="space-y-3">
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Bodyweight training</span>
+           </div>
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Mobility exercises</span>
+           </div>
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Posture correction</span>
+           </div>
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Core strengthening</span>
+           </div>
+          </div>
+         </div>
+         <div class="order-1 lg:order-2 rounded-2xl overflow-hidden shadow-lg" style="aspect-ratio: 4/3;">
+          <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #ede4d5 0%, #ddd0b8 100%);">
+           <svg viewbox="0 0 400 300" fill="none" style="width: 90%; height: 90%;"><g transform="translate(200, 150)">
+             <line x1="0" y1="-30" x2="0" y2="80" stroke="#5f714d" stroke-width="3" stroke-linecap="round" />
+             <path d="M0 -20 Q-35 -40 -40 -60" stroke="#5f714d" stroke-width="2.5" fill="none" stroke-linecap="round" />
+             <path d="M0 -20 Q35 -40 40 -60" stroke="#5f714d" stroke-width="2.5" fill="none" stroke-linecap="round" />
+             <path d="M0 0 Q-40 30 -45 60" stroke="#5f714d" stroke-width="2.5" fill="none" stroke-linecap="round" />
+             <path d="M0 0 Q40 30 45 60" stroke="#5f714d" stroke-width="2.5" fill="none" stroke-linecap="round" />
+             <circle cx="0" cy="-55" r="12" stroke="#5f714d" stroke-width="2" fill="none" />
+            </g>
+           </svg>
+          </div>
+         </div>
+        </div><!-- Program 3 -->
+        <div class="reveal grid lg:grid-cols-2 gap-12 items-center">
+         <div class="rounded-2xl overflow-hidden shadow-lg" style="aspect-ratio: 4/3;">
+          <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #d4dac9 0%, #c9b494 100%);">
+           <svg viewbox="0 0 400 300" fill="none" style="width: 90%; height: 90%;"><circle cx="200" cy="150" r="60" fill="#96a77e" opacity="0.2" /> <circle cx="200" cy="150" r="45" fill="#96a77e" opacity="0.1" /> <g transform="translate(200, 150)">
+             <path d="M-40 0 Q0 -50 40 0 Q0 50 -40 0" stroke="#5f714d" stroke-width="2" fill="none" stroke-linecap="round" />
+             <circle cx="0" cy="0" r="8" fill="#5f714d" opacity="0.3" />
+            </g>
+           </svg>
+          </div>
+         </div>
+         <div><span class="inline-block text-xs font-semibold tracking-widest uppercase mb-3 px-3 py-1.5 rounded-full" style="color: #5f714d; background-color: rgba(122,142,99,0.1);">Program 3</span>
+          <h3 class="font-heading text-2xl lg:text-3xl font-semibold mb-4" style="color: #353f2e;">Mindfulness &amp; Stress Relief</h3>
+          <p class="text-base leading-relaxed mb-6" style="color: #604e3e;">Designed for individuals dealing with stress and anxiety. This program focuses on mental clarity through guided meditation and gentle movement practices.</p>
+          <div class="space-y-3">
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Guided meditation sessions</span>
+           </div>
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Breathing exercises</span>
+           </div>
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Relaxation techniques</span>
+           </div>
+           <div class="flex items-start gap-3">
+            <i data-lucide="check" style="width:18px;height:18px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> <span class="text-sm" style="color: #755e49;">Gentle yoga sessions</span>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section>
+    </div><!-- PACKAGES PAGE -->
+    <div id="page-packages" class="page-section">
+     <section class="py-20 lg:py-28" style="background-color: #fdfcfa;">
+      <div class="max-w-7xl mx-auto px-6">
+       <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight" style="color: #353f2e;">Coaching Packages</h1>
+        <p class="text-base leading-relaxed mt-4" style="color: #907256;">Choose the program that fits your goals and lifestyle.</p>
+       </div>
+       <div class="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto"><!-- Beginner -->
+        <div class="reveal rounded-2xl p-8 border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.25);">
+         <div class="mb-6">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(122,142,99,0.1);">
+           <i data-lucide="leaf" style="width:20px;height:20px;color:#7a8e63;"></i>
+          </div>
+          <h3 class="font-heading text-2xl font-semibold mb-2" style="color: #353f2e;">Beginner Wellness</h3>
+          <p class="text-sm" style="color: #907256;">Perfect for starting your journey.</p>
+         </div>
+         <div class="mb-6">
+          <span class="font-heading text-4xl font-bold" style="color: #4b593e;" id="beginnerPrice">₹2,500</span> <span class="text-sm" style="color: #907256;"> / month</span>
+         </div>
+         <ul class="space-y-3 mb-8">
+          <li class="flex items-start gap-3 text-sm" style="color: #604e3e;"><i data-lucide="check" style="width:16px;height:16px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> 4 sessions per month</li>
+          <li class="flex items-start gap-3 text-sm" style="color: #604e3e;"><i data-lucide="check" style="width:16px;height:16px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> Personalized stretching</li>
+          <li class="flex items-start gap-3 text-sm" style="color: #604e3e;"><i data-lucide="check" style="width:16px;height:16px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> Basic breathing exercises</li>
+          <li class="flex items-start gap-3 text-sm" style="color: #604e3e;"><i data-lucide="check" style="width:16px;height:16px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> Wellness habit guidance</li>
+         </ul><a href="#" onclick="goToPage('contact'); return false;" class="block text-center px-6 py-3 rounded-full text-sm font-semibold border-2 transition-all duration-300 hover:shadow-md cursor-pointer" style="color: #5f714d; border-color: #b5c0a4;">Get Started</a>
+        </div><!-- Personal Transformation -->
+        <div class="reveal rounded-2xl p-8 relative shadow-xl" style="background-color: #4b593e; transform: scale(1.03);">
+         <div class="absolute top-0 right-6 px-4 py-1.5 rounded-b-lg text-xs font-semibold text-white" style="background-color: #7a8e63;">
+          Most Popular
+         </div>
+         <div class="mb-6">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(255,255,255,0.15);">
+           <i data-lucide="flame" style="width:20px;height:20px;color:#ede4d5;"></i>
+          </div>
+          <h3 class="font-heading text-2xl font-semibold mb-2 text-white">Personal Transformation</h3>
+          <p class="text-sm" style="color: #b5c0a4;">For lasting results and growth.</p>
+         </div>
+         <div class="mb-6">
+          <span class="font-heading text-4xl font-bold text-white" id="transformationPrice">₹4,500</span> <span class="text-sm" style="color: #b5c0a4;"> / month</span>
+         </div>
+         <ul class="space-y-3 mb-8">
+          <li class="flex items-start gap-3 text-sm text-sage-100"><i data-lucide="check" style="width:16px;height:16px;color:#96a77e;flex-shrink:0;margin-top:2px;"></i> 8 sessions per month</li>
+          <li class="flex items-start gap-3 text-sm text-sage-100"><i data-lucide="check" style="width:16px;height:16px;color:#96a77e;flex-shrink:0;margin-top:2px;"></i> Customized workout plan</li>
+          <li class="flex items-start gap-3 text-sm text-sage-100"><i data-lucide="check" style="width:16px;height:16px;color:#96a77e;flex-shrink:0;margin-top:2px;"></i> Lifestyle guidance</li>
+          <li class="flex items-start gap-3 text-sm text-sage-100"><i data-lucide="check" style="width:16px;height:16px;color:#96a77e;flex-shrink:0;margin-top:2px;"></i> Progress tracking</li>
+          <li class="flex items-start gap-3 text-sm text-sage-100"><i data-lucide="check" style="width:16px;height:16px;color:#96a77e;flex-shrink:0;margin-top:2px;"></i> WhatsApp support</li>
+         </ul><a href="#" onclick="goToPage('contact'); return false;" class="btn-shine block text-center px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-lg cursor-pointer" style="background-color: #7a8e63; color: #ffffff;">Get Started</a>
+        </div><!-- Premium -->
+        <div class="reveal rounded-2xl p-8 border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.25);">
+         <div class="mb-6">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(185,157,120,0.12);">
+           <i data-lucide="crown" style="width:20px;height:20px;color:#b99d78;"></i>
+          </div>
+          <h3 class="font-heading text-2xl font-semibold mb-2" style="color: #353f2e;">Complete Wellness</h3>
+          <p class="text-sm" style="color: #907256;">Full transformation program.</p>
+         </div>
+         <div class="mb-6">
+          <span class="font-heading text-4xl font-bold" style="color: #4b593e;" id="premiumPrice">₹7,500</span> <span class="text-sm" style="color: #907256;"> / month</span>
+         </div>
+         <ul class="space-y-3 mb-8">
+          <li class="flex items-start gap-3 text-sm" style="color: #604e3e;"><i data-lucide="check" style="width:16px;height:16px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> 12 sessions per month</li>
+          <li class="flex items-start gap-3 text-sm" style="color: #604e3e;"><i data-lucide="check" style="width:16px;height:16px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> Fully personalized plan</li>
+          <li class="flex items-start gap-3 text-sm" style="color: #604e3e;"><i data-lucide="check" style="width:16px;height:16px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> Yoga &amp; fitness integration</li>
+          <li class="flex items-start gap-3 text-sm" style="color: #604e3e;"><i data-lucide="check" style="width:16px;height:16px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> Meditation &amp; breathwork</li>
+          <li class="flex items-start gap-3 text-sm" style="color: #604e3e;"><i data-lucide="check" style="width:16px;height:16px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> Priority support</li>
+          <li class="flex items-start gap-3 text-sm" style="color: #604e3e;"><i data-lucide="check" style="width:16px;height:16px;color:#7a8e63;flex-shrink:0;margin-top:2px;"></i> Nutrition guidance</li>
+         </ul><a href="#" onclick="goToPage('contact'); return false;" class="block text-center px-6 py-3 rounded-full text-sm font-semibold border-2 transition-all duration-300 hover:shadow-md cursor-pointer" style="color: #5f714d; border-color: #b5c0a4;">Get Started</a>
+        </div>
+       </div>
+      </div>
+     </section>
+    </div><!-- CLIENT STORIES PAGE -->
+    <div id="page-stories" class="page-section">
+     <section class="py-20 lg:py-28" style="background-color: #fdfcfa;">
+      <div class="max-w-7xl mx-auto px-6">
+       <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight" style="color: #353f2e;">Client Success Stories</h1>
+        <p class="text-base leading-relaxed mt-4" style="color: #907256;">Real transformations from real people.</p>
+       </div>
+       <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto"><!-- Story 1 -->
+        <div class="reveal rounded-2xl p-8 border" style="background-color: #f9f6f1; border-color: rgba(180,192,164,0.15);">
+         <div class="mb-4">
+          <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i>
+          </div>
+          <p class="text-sm leading-relaxed mb-6" style="color: #604e3e;">After three months of consistent yoga sessions, I improved my flexibility dramatically and reduced chronic back pain. The structured guidance made it easy to stay consistent and see real results.</p>
+         </div>
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold" style="background-color: #d4dac9; color: #4b593e;">
+           AP
+          </div>
+          <div>
+           <p class="text-sm font-semibold" style="color: #353f2e;">Ananya Patel</p>
+           <p class="text-xs" style="color: #907256;">3 months in program</p>
+          </div>
+         </div>
+        </div><!-- Story 2 -->
+        <div class="reveal rounded-2xl p-8 border" style="background-color: #f9f6f1; border-color: rgba(180,192,164,0.15);">
+         <div class="mb-4">
+          <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i>
+          </div>
+          <p class="text-sm leading-relaxed mb-6" style="color: #604e3e;">The personalized fitness program helped me build real strength and improve my overall health. The coaching sessions were motivating and structured. I've never felt better!</p>
+         </div>
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold" style="background-color: #ede4d5; color: #755e49;">
+           RK
+          </div>
+          <div>
+           <p class="text-sm font-semibold" style="color: #353f2e;">Rohan Kumar</p>
+           <p class="text-xs" style="color: #907256;">6 months in program</p>
+          </div>
+         </div>
+        </div><!-- Story 3 -->
+        <div class="reveal rounded-2xl p-8 border" style="background-color: #f9f6f1; border-color: rgba(180,192,164,0.15);">
+         <div class="mb-4">
+          <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i>
+          </div>
+          <p class="text-sm leading-relaxed mb-6" style="color: #604e3e;">The meditation and breathwork sessions have been life-changing. My anxiety has reduced significantly, and I sleep so much better. Highly recommend to anyone feeling overwhelmed by stress.</p>
+         </div>
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold" style="background-color: #d4dac9; color: #4b593e;">
+           SM
+          </div>
+          <div>
+           <p class="text-sm font-semibold" style="color: #353f2e;">Sneha Menon</p>
+           <p class="text-xs" style="color: #907256;">4 months in program</p>
+          </div>
+         </div>
+        </div><!-- Story 4 -->
+        <div class="reveal rounded-2xl p-8 border" style="background-color: #f9f6f1; border-color: rgba(180,192,164,0.15);">
+         <div class="mb-4">
+          <div class="flex gap-1 mb-4"><i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i> <i data-lucide="star" style="width:16px;height:16px;color:#f59e0b;fill:#f59e0b;"></i>
+          </div>
+          <p class="text-sm leading-relaxed mb-6" style="color: #604e3e;">I've tried many fitness programs, but this personalized approach is different. In just five months, I've increased my strength, improved my flexibility, and built sustainable daily habits.</p>
+         </div>
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold" style="background-color: #ede4d5; color: #755e49;">
+           MJ
+          </div>
+          <div>
+           <p class="text-sm font-semibold" style="color: #353f2e;">Mihir Joshi</p>
+           <p class="text-xs" style="color: #907256;">5 months in program</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section>
+    </div><!-- BLOG PAGE -->
+    <div id="page-blog" class="page-section">
+     <section class="py-20 lg:py-28" style="background-color: #fdfcfa;">
+      <div class="max-w-7xl mx-auto px-6">
+       <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight" style="color: #353f2e;">Wellness Insights</h1>
+        <p class="text-base leading-relaxed mt-4" style="color: #907256;">Knowledge and tips for your wellness journey.</p>
+       </div>
+       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto"><!-- Article 1 -->
+        <div class="reveal card-hover rounded-2xl overflow-hidden border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.2);">
+         <div class="h-40 flex items-center justify-center" style="background: linear-gradient(135deg, #e8ebe3 0%, #d4dac9 100%);"><i data-lucide="sun" style="width:48px;height:48px;color:#b99d78;opacity:0.6;"></i>
+         </div>
+         <div class="p-6"><span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="background-color: rgba(122,142,99,0.1); color: #5f714d;">Yoga Practice</span>
+          <h3 class="font-heading text-lg font-semibold mt-3 mb-2" style="color: #353f2e;">Benefits of Daily Yoga</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color: #755e49;">Discover how practicing yoga daily can improve flexibility, strength, mental clarity, and overall well-being.</p><a href="#" class="inline-flex items-center gap-2 text-sm font-semibold" style="color: #5f714d;"><span>Read More</span> <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></a>
+         </div>
+        </div><!-- Article 2 -->
+        <div class="reveal card-hover rounded-2xl overflow-hidden border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.2);">
+         <div class="h-40 flex items-center justify-center" style="background: linear-gradient(135deg, #ede4d5 0%, #ddd0b8 100%);"><i data-lucide="brain" style="width:48px;height:48px;color:#b99d78;opacity:0.6;"></i>
+         </div>
+         <div class="p-6"><span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="background-color: rgba(122,142,99,0.1); color: #5f714d;">Mental Health</span>
+          <h3 class="font-heading text-lg font-semibold mt-3 mb-2" style="color: #353f2e;">Meditation &amp; Mental Health</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color: #755e49;">Explore how meditation improves mental health, reduces anxiety, and enhances emotional well-being.</p><a href="#" class="inline-flex items-center gap-2 text-sm font-semibold" style="color: #5f714d;"><span>Read More</span> <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></a>
+         </div>
+        </div><!-- Article 3 -->
+        <div class="reveal card-hover rounded-2xl overflow-hidden border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.2);">
+         <div class="h-40 flex items-center justify-center" style="background: linear-gradient(135deg, #d4dac9 0%, #c9b494 100%);"><i data-lucide="leaf" style="width:48px;height:48px;color:#b99d78;opacity:0.6;"></i>
+         </div>
+         <div class="p-6"><span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="background-color: rgba(122,142,99,0.1); color: #5f714d;">Beginner Guide</span>
+          <h3 class="font-heading text-lg font-semibold mt-3 mb-2" style="color: #353f2e;">Yoga for Beginners</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color: #755e49;">Simple yoga poses and practices perfect for beginners starting their wellness journey safely and effectively.</p><a href="#" class="inline-flex items-center gap-2 text-sm font-semibold" style="color: #5f714d;"><span>Read More</span> <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></a>
+         </div>
+        </div><!-- Article 4 -->
+        <div class="reveal card-hover rounded-2xl overflow-hidden border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.2);">
+         <div class="h-40 flex items-center justify-center" style="background: linear-gradient(135deg, #e8ebe3 0%, #d4dac9 100%);"><i data-lucide="zap" style="width:48px;height:48px;color:#b99d78;opacity:0.6;"></i>
+         </div>
+         <div class="p-6"><span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="background-color: rgba(122,142,99,0.1); color: #5f714d;">Fitness Routine</span>
+          <h3 class="font-heading text-lg font-semibold mt-3 mb-2" style="color: #353f2e;">Building Consistency</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color: #755e49;">Learn practical strategies for building a consistent fitness routine and maintaining long-term wellness habits.</p><a href="#" class="inline-flex items-center gap-2 text-sm font-semibold" style="color: #5f714d;"><span>Read More</span> <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></a>
+         </div>
+        </div><!-- Article 5 -->
+        <div class="reveal card-hover rounded-2xl overflow-hidden border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.2);">
+         <div class="h-40 flex items-center justify-center" style="background: linear-gradient(135deg, #ede4d5 0%, #ddd0b8 100%);"><i data-lucide="wind" style="width:48px;height:48px;color:#b99d78;opacity:0.6;"></i>
+         </div>
+         <div class="p-6"><span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="background-color: rgba(122,142,99,0.1); color: #5f714d;">Breathwork</span>
+          <h3 class="font-heading text-lg font-semibold mt-3 mb-2" style="color: #353f2e;">Power of Breathing</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color: #755e49;">Understand how proper breathing techniques can reduce stress, improve focus, and enhance physical performance.</p><a href="#" class="inline-flex items-center gap-2 text-sm font-semibold" style="color: #5f714d;"><span>Read More</span> <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></a>
+         </div>
+        </div><!-- Article 6 -->
+        <div class="reveal card-hover rounded-2xl overflow-hidden border" style="background-color: #ffffff; border-color: rgba(180,192,164,0.2);">
+         <div class="h-40 flex items-center justify-center" style="background: linear-gradient(135deg, #d4dac9 0%, #c9b494 100%);"><i data-lucide="heart" style="width:48px;height:48px;color:#b99d78;opacity:0.6;"></i>
+         </div>
+         <div class="p-6"><span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="background-color: rgba(122,142,99,0.1); color: #5f714d;">Holistic Wellness</span>
+          <h3 class="font-heading text-lg font-semibold mt-3 mb-2" style="color: #353f2e;">Mind-Body Connection</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color: #755e49;">Explore how integrating yoga and fitness creates a powerful connection between mental and physical health.</p><a href="#" class="inline-flex items-center gap-2 text-sm font-semibold" style="color: #5f714d;"><span>Read More</span> <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></a>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section>
+    </div><!-- CONTACT PAGE -->
+    <div id="page-contact" class="page-section">
+     <section class="py-20 lg:py-28" style="background-color: #fdfcfa;">
+      <div class="max-w-7xl mx-auto px-6">
+       <div class="grid lg:grid-cols-2 gap-16"><!-- Contact Info -->
+        <div class="reveal">
+         <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight mb-8" style="color: #353f2e;">Get in Touch</h1>
+         <p class="text-base leading-relaxed mb-10" style="color: #604e3e;">Ready to begin your wellness journey or have questions about our coaching programs? Feel free to reach out. I'm here to help you achieve your health and fitness goals.</p>
+         <div class="space-y-8">
+          <div class="flex gap-4">
+           <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: rgba(122,142,99,0.12);"><i data-lucide="phone" style="width:20px;height:20px;color:#5f714d;"></i>
+           </div>
+           <div>
+            <p class="font-semibold mb-1" style="color: #353f2e;">Phone</p>
+            <p style="color: #755e49;">+91 98765 43210</p>
+           </div>
+          </div>
+          <div class="flex gap-4">
+           <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: rgba(122,142,99,0.12);"><i data-lucide="mail" style="width:20px;height:20px;color:#5f714d;"></i>
+           </div>
+           <div>
+            <p class="font-semibold mb-1" style="color: #353f2e;">Email</p>
+            <p style="color: #755e49;">hello@sereneflow.com</p>
+           </div>
+          </div>
+          <div class="flex gap-4">
+           <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: rgba(122,142,99,0.12);"><i data-lucide="map-pin" style="width:20px;height:20px;color:#5f714d;"></i>
+           </div>
+           <div>
+            <p class="font-semibold mb-1" style="color: #353f2e;">Location</p>
+            <p style="color: #755e49;">Available for online and selected in-person sessions</p>
+           </div>
+          </div>
+          <div class="flex gap-4">
+           <div class="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: rgba(122,142,99,0.12);"><i data-lucide="clock" style="width:20px;height:20px;color:#5f714d;"></i>
+           </div>
+           <div>
+            <p class="font-semibold mb-1" style="color: #353f2e;">Availability</p>
+            <p style="color: #755e49;">Mon - Sat, 6:00 AM - 8:00 PM IST</p>
+           </div>
+          </div>
+         </div>
+         <div class="mt-12 pt-8" style="border-top: 1px solid rgba(122,142,99,0.15);">
+          <p class="text-sm mb-4" style="color: #755e49;">Follow us on social media:</p>
+          <div class="flex gap-3"><a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center transition-all hover:shadow-md" style="background-color: rgba(122,142,99,0.1); color: #5f714d;"> <i data-lucide="instagram" style="width:18px;height:18px;"></i> </a> <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center transition-all hover:shadow-md" style="background-color: rgba(122,142,99,0.1); color: #5f714d;"> <i data-lucide="facebook" style="width:18px;height:18px;"></i> </a> <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center transition-all hover:shadow-md" style="background-color: rgba(122,142,99,0.1); color: #5f714d;"> <i data-lucide="youtube" style="width:18px;height:18px;"></i> </a>
+          </div>
+         </div>
+        </div><!-- Contact Form -->
+        <div class="reveal">
+         <form id="contactForm" class="bg-white rounded-2xl p-8 border" style="border-color: rgba(180,192,164,0.2);">
+          <div class="mb-6"><label class="block text-sm font-semibold mb-2" style="color: #353f2e;">Full Name</label> <input type="text" required class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all" style="border-color: rgba(180,192,164,0.3); color: #353f2e;" placeholder="Your name">
+          </div>
+          <div class="mb-6"><label class="block text-sm font-semibold mb-2" style="color: #353f2e;">Email Address</label> <input type="email" required class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all" style="border-color: rgba(180,192,164,0.3); color: #353f2e;" placeholder="your@email.com">
+          </div>
+          <div class="mb-6"><label class="block text-sm font-semibold mb-2" style="color: #353f2e;">Phone Number</label> <input type="tel" required class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all" style="border-color: rgba(180,192,164,0.3); color: #353f2e;" placeholder="+91 XXXXX XXXXX">
+          </div>
+          <div class="mb-6"><label class="block text-sm font-semibold mb-2" style="color: #353f2e;">Preferred Program</label> <select class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all" style="border-color: rgba(180,192,164,0.3); color: #353f2e;"> <option>Select a program</option> <option>Beginner Yoga Journey</option> <option>Strength &amp; Mobility</option> <option>Mindfulness &amp; Meditation</option> <option>Personal Transformation</option> <option>Not sure yet</option> </select>
+          </div>
+          <div class="mb-6"><label class="block text-sm font-semibold mb-2" style="color: #353f2e;">Message</label> <textarea rows="4" class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all resize-none" style="border-color: rgba(180,192,164,0.3); color: #353f2e;" placeholder="Tell me about your goals..."></textarea>
+          </div><button type="submit" class="btn-shine w-full px-6 py-3 rounded-full text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg" style="background-color: #7a8e63;">Send Message</button>
+         </form>
+        </div>
+       </div>
+      </div>
+     </section>
+    </div>
+   </main><!-- FOOTER -->
+   <footer style="background-color: #353f2e;" class="mt-auto">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+     <div class="grid sm:grid-cols-3 gap-8 mb-8"><!-- About -->
+      <div>
+       <h4 class="font-heading text-sm font-semibold mb-4 text-white">About</h4>
+       <p class="text-xs leading-relaxed" style="color: #96a77e;">Helping individuals build stronger bodies, calmer minds, and healthier lifestyles through yoga and mindful fitness coaching.</p>
+      </div><!-- Quick Links -->
+      <div>
+       <h4 class="font-heading text-sm font-semibold mb-4 text-white">Quick Links</h4>
+       <ul class="space-y-2 text-xs" style="color: #96a77e;">
+        <li><a href="#" onclick="goToPage('about'); return false;" class="hover:text-white transition-colors cursor-pointer">About</a></li>
+        <li><a href="#" onclick="goToPage('programs'); return false;" class="hover:text-white transition-colors cursor-pointer">Programs</a></li>
+        <li><a href="#" onclick="goToPage('packages'); return false;" class="hover:text-white transition-colors cursor-pointer">Pricing</a></li>
+        <li><a href="#" onclick="goToPage('contact'); return false;" class="hover:text-white transition-colors cursor-pointer">Contact</a></li>
+       </ul>
+      </div><!-- Contact -->
+      <div>
+       <h4 class="font-heading text-sm font-semibold mb-4 text-white">Contact</h4>
+       <p class="text-xs mb-2" style="color: #96a77e;">hello@sereneflow.com</p>
+       <p class="text-xs" style="color: #96a77e;">+91 98765 43210</p>
+      </div>
+     </div>
+     <div class="border-t" style="border-color: rgba(255,255,255,0.1); padding-top: 8px;">
+      <p class="text-xs text-center" style="color: #5f714d;">© 2025 Serene Flow Yoga &amp; Fitness Coaching. All rights reserved.</p>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+    // Config object
+    const config = {
+      hero_headline: 'Transform Your Body, Mind, and Lifestyle Through Yoga and Fitness',
+      hero_subheading: 'Personalized yoga and fitness coaching designed to improve strength, flexibility, mental clarity, and overall well-being.',
+      instructor_name: 'Meet Your Instructor',
+      instructor_title: 'Certified Yoga Instructor & Personal Fitness Coach',
+      beginner_price: '₹2,500',
+      transformation_price: '₹4,500',
+      premium_price: '₹7,500',
+      background_color: '#fdfcfa',
+      text_color: '#353f2e',
+      primary_action_color: '#7a8e63'
+    };
+
+    // Page navigation
+    function goToPage(page) {
+      document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+      const wrapper = document.getElementById('appWrapper');
+      wrapper.scrollTop = 0;
+    }
+
+    function closeMenu() {
+      const mobileMenu = document.getElementById('mobileMenu');
+      mobileMenu.classList.remove('visible-menu');
+      mobileMenu.classList.add('hidden-menu');
+      document.getElementById('mobileMenuBtn').setAttribute('aria-expanded', 'false');
+    }
+
+    // Mobile menu toggle
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      const mobileMenu = document.getElementById('mobileMenu');
+      if (mobileMenu.classList.contains('hidden-menu')) {
+        mobileMenu.classList.remove('hidden-menu');
+        mobileMenu.classList.add('visible-menu');
+      } else {
+        mobileMenu.classList.remove('visible-menu');
+        mobileMenu.classList.add('hidden-menu');
+      }
+    });
+
+    // Scroll reveal observer
+    const scrollWrapper = document.getElementById('appWrapper');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Nav shadow on scroll
+    scrollWrapper.addEventListener('scroll', () => {
+      const nav = document.querySelector('header');
+      if (scrollWrapper.scrollTop > 50) {
+        nav.style.boxShadow = '0 1px 20px rgba(75, 89, 62, 0.08)';
+      } else {
+        nav.style.boxShadow = 'none';
+      }
+    });
+
+    // Element SDK Setup
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig: {
+          background_color: '#fdfcfa',
+          text_color: '#353f2e',
+          primary_action_color: '#7a8e63',
+          secondary_action_color: '#b99d78',
+          font_family: 'Cormorant Garamond',
+          font_size: 16,
+          hero_headline: 'Transform Your Body, Mind, and Lifestyle Through Yoga and Fitness',
+          hero_subheading: 'Personalized yoga and fitness coaching designed to improve strength, flexibility, mental clarity, and overall well-being.',
+          instructor_name: 'Meet Your Instructor',
+          instructor_title: 'Certified Yoga Instructor & Personal Fitness Coach',
+          beginner_price: '₹2,500',
+          transformation_price: '₹4,500',
+          premium_price: '₹7,500'
+        },
+        onConfigChange: async (cfg) => {
+          document.getElementById('heroHeadline').textContent = cfg.hero_headline;
+          document.getElementById('heroSubheading').textContent = cfg.hero_subheading;
+          document.getElementById('instructorName').textContent = cfg.instructor_name;
+          document.getElementById('beginnerPrice').textContent = cfg.beginner_price;
+          document.getElementById('transformationPrice').textContent = cfg.transformation_price;
+          document.getElementById('premiumPrice').textContent = cfg.premium_price;
+          document.getElementById('appWrapper').style.backgroundColor = cfg.background_color;
+        },
+        mapToCapabilities: (cfg) => ({
+          recolorables: [
+            { get: () => cfg.background_color, set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+            { get: () => cfg.text_color, set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+            { get: () => cfg.primary_action_color, set: (v) => { cfg.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+            { get: () => cfg.secondary_action_color, set: (v) => { cfg.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+          ],
+          borderables: [],
+          fontEditable: { get: () => cfg.font_family, set: (v) => { cfg.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+          fontSizeable: { get: () => cfg.font_size, set: (v) => { cfg.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['hero_headline', cfg.hero_headline],
+          ['hero_subheading', cfg.hero_subheading],
+          ['instructor_name', cfg.instructor_name],
+          ['instructor_title', cfg.instructor_title],
+          ['beginner_price', cfg.beginner_price],
+          ['transformation_price', cfg.transformation_price],
+          ['premium_price', cfg.premium_price]
+        ])
+      });
+    }
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Form submission
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you for reaching out! I will get back to you soon.');
+      e.target.reset();
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dbd5e0ba65eb277',t:'MTc3MzQyOTMyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
